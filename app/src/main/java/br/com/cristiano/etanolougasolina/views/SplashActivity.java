@@ -1,14 +1,15 @@
-package br.com.cristiano.etanolougasolina;
+package br.com.cristiano.etanolougasolina.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import br.com.cristiano.etanolougasolina.R;
 
 public class SplashActivity extends AppCompatActivity {
 
