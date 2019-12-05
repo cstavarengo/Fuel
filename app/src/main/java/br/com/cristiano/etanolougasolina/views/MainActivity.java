@@ -3,6 +3,9 @@ package br.com.cristiano.etanolougasolina.views;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,13 +64,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
         this.texToSpeech.stopTalking();
     }
-
 
     @Override
     protected void onDestroy() {
@@ -75,6 +76,17 @@ public class MainActivity extends AppCompatActivity {
         this.texToSpeech.destroy();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return true;
+    }
 
     private boolean camposPreenchidos() {
         String valorG = editTextGasolina.getText().toString();

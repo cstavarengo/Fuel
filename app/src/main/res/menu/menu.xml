@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_item_main"
-        android:title="Abastecimentos"
-        android:contentDescription="Abastecimento"/>
+    <item android:id="@+id/menuItemAbastecimento"
+        android:title="Abastecimento"
+        android:orderInCategory="100"
+        app:showAsAction="never">
+
+            <menu>
+                <item android:id="@+id/menuItemNovoAbastecimento"  android:title="Novo" />
+                <item android:id="@+id/menuItemAbastecimentoSobre" android:title="Sobre"/>
+            </menu>
+    </item>
+
+    <item android:id="@+id/menuItemSom"
+        android:icon="@android:drawable/sym_call_outgoing"
+        android:title="Som"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/menuItemVibracao"
+        android:icon="@android:drawable/presence_video_away"
+        android:title="Som"
+        app:showAsAction="always"/>
 
 </menu>
