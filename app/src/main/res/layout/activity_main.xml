@@ -24,7 +24,7 @@
                 android:drawablePadding="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                style="@style/EditTextStyle"
                 android:layout_gravity="bottom"/>
 
             <EditText
@@ -35,12 +35,14 @@
                 android:drawablePadding="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/EditTextStyle"
                 android:layout_gravity="top"/>
 
             <Button
                 android:id="@+id/buttonVerificar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/ButtonStyle"
                 android:text="VERIFICAR"/>
 
         </LinearLayout>
