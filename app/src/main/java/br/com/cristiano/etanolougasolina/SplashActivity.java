@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 
 import java.util.Timer;
@@ -14,7 +15,7 @@ public class SplashActivity extends AppCompatActivity {
     private int i;
     private Timer timer;
     private ProgressBar progressBar;
-    private long periodo = 25;
+    private long periodo = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +23,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         progressBar = findViewById(R.id.progressBar);
-
 
         timer = new Timer();
 

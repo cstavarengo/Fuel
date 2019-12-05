@@ -9,9 +9,10 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="300dp"
-        android:layout_height="0dp"
-        android:layout_weight="50"
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="15"
         android:layout_gravity="center"
         android:src="@drawable/posto" />
 
@@ -19,25 +20,27 @@
     <TextView
         android:id="@+id/textView"
         android:text="Carregando..."
-        android:textSize="25sp"
-        android:layout_gravity="top"
+        android:textSize="18sp"
+        android:layout_gravity="bottom"
         android:gravity="center"
+        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"/>
+        android:layout_weight="5"/>
 
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_gravity="top"
-        android:outlineAmbientShadowColor="@color/colorPrimary"
+        android:outlineAmbientShadowColor="@color/colorAccent"
         android:minHeight="15dp"
         android:max="100"
         android:indeterminate="false"
         android:progress="20"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="20"/>
+        android:layout_weight="5"
+        android:layout_marginBottom="50dp"/>
 
 </LinearLayout>
