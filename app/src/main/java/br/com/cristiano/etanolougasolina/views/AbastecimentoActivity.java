@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +35,8 @@ import br.com.cristiano.etanolougasolina.adapters.AbastecimentoAdapter;
 import br.com.cristiano.etanolougasolina.api.CidadesApi;
 import br.com.cristiano.etanolougasolina.api.EstadosApi;
 import br.com.cristiano.etanolougasolina.aux.Internet;
+import br.com.cristiano.etanolougasolina.aux.TexToSpeech;
+import br.com.cristiano.etanolougasolina.aux.Vibrar;
 import br.com.cristiano.etanolougasolina.constantes.ConstantesApp;
 import br.com.cristiano.etanolougasolina.controller.AbastecimentoController;
 import br.com.cristiano.etanolougasolina.interfaces.AdapterInterfaceOnClick;
@@ -44,6 +49,10 @@ public class AbastecimentoActivity extends AppCompatActivity {
 
     private final static String TAG = ConstantesApp.TAG;
     private int posicao;
+
+    private SharedPreferences pref;
+    private Vibrar vibrar;
+    private TexToSpeech texToSpeech;
 
     private Button adicionar;
     private Button cancelar;
@@ -89,6 +98,10 @@ public class AbastecimentoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abastecimento);
 
+        pref = getApplicationContext().getSharedPreferences(ConstantesApp.PREFS, Context.MODE_PRIVATE);
+        vibrar = new Vibrar(this);
+        texToSpeech = new TexToSpeech(this);
+
         recyclerView = findViewById(R.id.recyclerView);
 
         inflater = LayoutInflater.from(this);
@@ -126,11 +139,31 @@ public class AbastecimentoActivity extends AppCompatActivity {
 
         abastecimentoAdapter.setAdapterInterfaceOnLongClick(new AdapterInterfaceOnLongClick() {
             @Override
-            public void longClick(int position) {
+            public void longClick(final int position) {
                 posicao = position;
                 Abastecimento abastecimento = abastecimentoAdapter.getAbastecimentos().get(position);
+                final Long id = abastecimento.getId();
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(AbastecimentoActivity.this);
+                builder.setTitle("Apagar Abastecimento")
+                        .setMessage("Deseja apagar o registro de abastecimento?")
+                        .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton("APAGAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                abastecimentoController.apagarAbastecimento(id);
+                                abastecimentoAdapter.getAbastecimentos().remove(posicao);
+                                abastecimentoAdapter.notifyItemRemoved(position);
+                            }
+                        });
 
+                AlertDialog a = builder.create();
+                a.show();
             }
         });
     }
@@ -248,17 +281,23 @@ public class AbastecimentoActivity extends AppCompatActivity {
                 Abastecimento abastecimento = abastecimentoController.buscarAbastecimento(Long.valueOf(textViewIdAlterar.getText().toString()));
 
                 if (abastecimento != null) {
-                    Float litros = Float.valueOf(editTextAlterarLitros.getText().toString());
-                    Float valor = Float.valueOf(editTextAlterarValor.getText().toString());
-                    if (valor.isNaN() || litros.isNaN())
-                        Toast.makeText(AbastecimentoActivity.this, "Não deixe campos vazios!", Toast.LENGTH_SHORT).show();
+                    String litros = editTextAlterarLitros.getText().toString();
+                    String valor = editTextAlterarValor.getText().toString();
+                    if (valor.isEmpty() || litros.isEmpty()) {
+                        String alerta = "Não deixe campos vazios!";
+                        if(pref.getBoolean(ConstantesApp.VIBRATION_STATE, false))
+                            vibrar.vibrar(600);
+                        if(pref.getBoolean(ConstantesApp.AUDIO_STATE, false))
+                            texToSpeech.toPronounce(alerta);
+                        Toast.makeText(AbastecimentoActivity.this, alerta, Toast.LENGTH_SHORT).show();
+                    }
                     else {
                         if (radioGasAlt.isChecked())
                             abastecimento.setCombustivel(ConstantesApp.GASOLINA);
                         else
                             abastecimento.setCombustivel(ConstantesApp.ETANOL);
-                        abastecimento.setLitros(litros);
-                        abastecimento.setValor(valor);
+                        abastecimento.setLitros(Float.parseFloat(litros));
+                        abastecimento.setValor(Float.parseFloat(valor));
                         abastecimentoController.alterarAbastecimento(abastecimento);
                         alertDialogAlt.dismiss();
 
@@ -301,7 +340,14 @@ public class AbastecimentoActivity extends AppCompatActivity {
                     adicionarNovoAbastecimento();
                     limparCampos();
                 } else {
-                    Toast.makeText(AbastecimentoActivity.this, "Por favor, preencha todos os campos!", Toast.LENGTH_SHORT).show();
+                    String alerta = "Por favor, preencha todos os campos!";
+
+                    if(pref.getBoolean(ConstantesApp.VIBRATION_STATE, false))
+                        vibrar.vibrar(600);
+                    if(pref.getBoolean(ConstantesApp.AUDIO_STATE, false))
+                        texToSpeech.toPronounce(alerta);
+
+                    Toast.makeText(AbastecimentoActivity.this, alerta, Toast.LENGTH_SHORT).show();
                 }
             }
         });

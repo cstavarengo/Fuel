@@ -10,9 +10,13 @@
             <menu>
                 <item android:id="@+id/menuItemAbastecimentoAct" android:title="Abastecimentos"/>
                 <item android:id="@+id/menuItemNovoAbastecimento"  android:title="Novo" />
-                <item android:id="@+id/menuItemAbastecimentoSobre" android:title="Sobre"/>
             </menu>
     </item>
+
+    <item android:id="@+id/menuItemAbastecimentoSobre"
+        android:title="Sobre"
+        app:showAsAction="never"/>
+
 
     <item android:id="@+id/menuItemSom"
         android:icon="@drawable/ic_volume_up_black_24dp"
