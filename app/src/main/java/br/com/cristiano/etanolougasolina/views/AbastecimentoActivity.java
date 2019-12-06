@@ -209,6 +209,18 @@ public class AbastecimentoActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.texToSpeech.stopTalking();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.texToSpeech.destroy();
+    }
+
     private void abrirTelaNovoAbastecimento() {
         if(Internet.internetConectada(this)) {
             alertDialog.show();
