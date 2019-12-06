@@ -4,15 +4,19 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.cristiano.etanolougasolina.banco.DatabaseHelper;
 import br.com.cristiano.etanolougasolina.constantes.BancoConstantes;
+import br.com.cristiano.etanolougasolina.constantes.ConstantesApp;
 import br.com.cristiano.etanolougasolina.model.Abastecimento;
 
 public class AbastecimentoDAO {
+
+    private static final String TAG = ConstantesApp.TAG;
 
     private SQLiteDatabase banco;
     private DatabaseHelper databaseHelper;
@@ -83,13 +87,11 @@ public class AbastecimentoDAO {
     public Abastecimento findOne(Long id){
 
         Abastecimento abastecimento = null;
-
         String query = "SELECT * FROM " + BancoConstantes.TABLE_NAME + " WHERE " + BancoConstantes.COLUNA_ID + " = " + id;
-
         Cursor cursor = banco.rawQuery(query, null);
 
-        if(cursor.moveToFirst()){
-
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
             abastecimento = new Abastecimento.Builder()
                     .id(cursor.getLong(cursor.getColumnIndex(BancoConstantes.COLUNA_ID)))
                     .combustivel(cursor.getString(cursor.getColumnIndex(BancoConstantes.COLUNA_COMBUSTIVEL)))
@@ -99,6 +101,7 @@ public class AbastecimentoDAO {
                     .local(cursor.getString(cursor.getColumnIndex(BancoConstantes.COLUNA_LOCAL)))
                     .build();
         }
+
         return abastecimento;
     }
 

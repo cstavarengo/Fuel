@@ -11,6 +11,8 @@ public interface AbastecimentoService {
 
     List<Abastecimento> listarAbastecimentos();
 
+    Abastecimento buscarAbastecimento(Long id);
+
     Long salvarAbastecimento(Abastecimento abastecimento);
 
     Integer alterarAbastecimento(Abastecimento abastecimento);

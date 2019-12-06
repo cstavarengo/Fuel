@@ -5,4 +5,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:text="Alterar Abastecimento"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/textViewIdAlterar"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    style="@style/TextViewStyle"
+                    android:checked="true"
+                    android:id="@+id/radioButtonGasolinaAlterar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GASOLINA"/>
+
+                <RadioButton
+                    style="@style/TextViewStyle"
+                    android:id="@+id/radioButtonEtanolAlterar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ETANOL"/>
+
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/editTextLitrosAlterar"
+                android:hint="Digite a quantidade de litros"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/EditTextStyle"/>
+
+            <EditText
+                android:id="@+id/editTextValorAlterar"
+                android:hint="Digite o Valor do combustível"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/EditTextStyle"/>
+
+            <Button
+                android:id="@+id/buttonAlterarAbastecimento"
+                style="@style/ButtonStyle"
+                android:text="ALTERAR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/buttonCancelarAlteracao"
+                style="@style/ButtonCancelarStyle"
+                android:text="CANCELAR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

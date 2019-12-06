@@ -31,6 +31,12 @@ public class AbastecimentoController implements AbastecimentoService {
 
 
     @Override
+    public Abastecimento buscarAbastecimento(Long id) {
+        return this.abastecimentoDAO.findOne(id);
+    }
+
+
+    @Override
     public Long salvarAbastecimento(Abastecimento abastecimento) {
         return this.abastecimentoDAO.save(abastecimento);
     }

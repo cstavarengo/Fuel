@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -42,12 +43,17 @@ import br.com.cristiano.etanolougasolina.model.Estado;
 public class AbastecimentoActivity extends AppCompatActivity {
 
     private final static String TAG = ConstantesApp.TAG;
+    private int posicao;
 
     private Button adicionar;
     private Button cancelar;
+    private Button alterar;
+    private Button cancelarAlt;
 
     private Spinner spinnerEstados;
     private Spinner spinnerCidades;
+
+    private TextView textViewIdAlterar;
 
     private EditText editTextLitros;
     private EditText editTextValor;
@@ -56,12 +62,17 @@ public class AbastecimentoActivity extends AppCompatActivity {
 
     private RadioButton radioGas;
     private RadioButton radioEta;
+    private RadioButton radioGasAlt;
+    private RadioButton radioEtaAlt;
 
     private RecyclerView recyclerView;
     private AlertDialog alertDialog;
+    private AlertDialog alertDialogAlt;
     private AlertDialog.Builder builder;
+    private AlertDialog.Builder builderAlt;
 
     private View layout_abastecimento;
+    private View layout_alterar;
     private LayoutInflater inflater;
 
     private LinearLayoutManager linearLayoutManager;
@@ -82,6 +93,7 @@ public class AbastecimentoActivity extends AppCompatActivity {
 
         inflater = LayoutInflater.from(this);
         layout_abastecimento = inflater.inflate(R.layout.layout_novo_abastecimento, null, false);
+        layout_alterar       = inflater.inflate(R.layout.layout_alteracao, null, false);
 
         linearLayoutManager = new LinearLayoutManager(this);
 
@@ -99,15 +111,26 @@ public class AbastecimentoActivity extends AppCompatActivity {
         abastecimentoAdapter.setAdapterInterfaceOnClick(new AdapterInterfaceOnClick() {
             @Override
             public void onClick(int position) {
-                // TODO implementar onClick
-                Toast.makeText(AbastecimentoActivity.this, "Position: " + position, Toast.LENGTH_SHORT).show();
+                posicao = position;
+                Abastecimento abastecimento = abastecimentoAdapter.getAbastecimentos().get(position);
+                textViewIdAlterar.setText(String.valueOf(abastecimento.getId()));
+                editTextAlterarLitros.setText(String.valueOf(abastecimento.getLitros()));
+                editTextAlterarValor.setText(String.valueOf(abastecimento.getValor()));
+                if(abastecimento.getCombustivel().equals(ConstantesApp.GASOLINA))
+                    radioGasAlt.setChecked(true);
+                else
+                    radioEtaAlt.setChecked(true);
+                abrirTelaAlteracao();
             }
         });
 
         abastecimentoAdapter.setAdapterInterfaceOnLongClick(new AdapterInterfaceOnLongClick() {
             @Override
             public void longClick(int position) {
-                Toast.makeText(AbastecimentoActivity.this, "Position: " + position, Toast.LENGTH_SHORT).show();
+                posicao = position;
+                Abastecimento abastecimento = abastecimentoAdapter.getAbastecimentos().get(position);
+
+
             }
         });
     }
@@ -115,7 +138,6 @@ public class AbastecimentoActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         // Se vier a flag setada, abre direto para adicionar novo abastecimento
         Intent intent = getIntent();
         boolean flag = intent.getBooleanExtra("flag", false);
@@ -149,7 +171,6 @@ public class AbastecimentoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.d(TAG, "onBackPressed: ");
         Intent internet = new Intent(this, MainActivity.class);
         startActivity(internet);
         finish();
@@ -162,6 +183,10 @@ public class AbastecimentoActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Necessário conexão com a Internet!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void abrirTelaAlteracao(){
+        alertDialogAlt.show();
     }
 
     private void adicionarNovoAbastecimento() {
@@ -198,9 +223,58 @@ public class AbastecimentoActivity extends AppCompatActivity {
     private void configuracaoObjetos(){
         configurarAlertNovoAbastecimennto();
         configurarAlertAlteracaoAbastecimento();
+        configurarAlertAlteracaoAbastecimento();
     }
 
     private void configurarAlertAlteracaoAbastecimento() {
+        builderAlt = new AlertDialog.Builder(this);
+        builderAlt.setView(layout_alterar).setCancelable(false);
+        alertDialogAlt = builderAlt.create();
+
+        alterar = layout_alterar.findViewById(R.id.buttonAlterarAbastecimento);
+        cancelarAlt = layout_alterar.findViewById(R.id.buttonCancelarAlteracao);
+
+        editTextAlterarLitros = layout_alterar.findViewById(R.id.editTextLitrosAlterar);
+        editTextAlterarValor = layout_alterar.findViewById(R.id.editTextValorAlterar);
+
+        textViewIdAlterar = layout_alterar.findViewById(R.id.textViewIdAlterar);
+
+        radioGasAlt = layout_alterar.findViewById(R.id.radioButtonGasolinaAlterar);
+        radioEtaAlt = layout_alterar.findViewById(R.id.radioButtonEtanolAlterar);
+
+        alterar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Abastecimento abastecimento = abastecimentoController.buscarAbastecimento(Long.valueOf(textViewIdAlterar.getText().toString()));
+
+                if (abastecimento != null) {
+                    Float litros = Float.valueOf(editTextAlterarLitros.getText().toString());
+                    Float valor = Float.valueOf(editTextAlterarValor.getText().toString());
+                    if (valor.isNaN() || litros.isNaN())
+                        Toast.makeText(AbastecimentoActivity.this, "Não deixe campos vazios!", Toast.LENGTH_SHORT).show();
+                    else {
+                        if (radioGasAlt.isChecked())
+                            abastecimento.setCombustivel(ConstantesApp.GASOLINA);
+                        else
+                            abastecimento.setCombustivel(ConstantesApp.ETANOL);
+                        abastecimento.setLitros(litros);
+                        abastecimento.setValor(valor);
+                        abastecimentoController.alterarAbastecimento(abastecimento);
+                        alertDialogAlt.dismiss();
+
+                        abastecimentoAdapter.getAbastecimentos().set(posicao, abastecimento);
+                        abastecimentoAdapter.notifyItemChanged(posicao);
+                    }
+                }
+            }
+        });
+
+        cancelarAlt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialogAlt.dismiss();
+            }
+        });
     }
 
     private void configurarAlertNovoAbastecimennto() {

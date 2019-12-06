@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         editor = pref.edit();
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -133,11 +132,13 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, AbastecimentoActivity.class);
                 intent.putExtra("flag", true);
                 startActivity(intent);
+                finish();
                 break;
 
             case R.id.menuItemAbastecimentoAct:
                 intent = new Intent(this, AbastecimentoActivity.class);
                 startActivity(intent);
+                finish();
                 break;
 
             case R.id.menuItemAbastecimentoSobre:
