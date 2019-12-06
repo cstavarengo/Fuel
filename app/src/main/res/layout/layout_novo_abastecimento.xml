@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    style="@style/TextViewStyle"
+                    android:checked="true"
+                    android:id="@+id/radioButtonGasolina"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GASOLINA"/>
+
+                <RadioButton
+                    style="@style/TextViewStyle"
+                    android:id="@+id/radioButtonEtanol"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ETANOL"/>
+
+            </RadioGroup>
+
+
+            <Spinner
+                android:id="@+id/spinnerEstados"
+                style="@style/TextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <Spinner
+                android:id="@+id/spinnerCidades"
+                style="@style/TextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <EditText
+                android:id="@+id/editTextLitros"
+                android:hint="Digite a quantidade de litros"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/EditTextStyle"/>
+
+            <EditText
+                android:id="@+id/editTextValor"
+                android:hint="Digite o Valor do combustível"
+                android:inputType="numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/EditTextStyle"/>
+
+            <Button
+                android:id="@+id/buttonAdicionarNovoAbastecimento"
+                style="@style/ButtonStyle"
+                android:text="ADICIONAR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/buttonCancelar"
+                style="@style/ButtonCancelarStyle"
+                android:text="CANCELAR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

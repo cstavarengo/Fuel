@@ -1,6 +1,8 @@
 package br.com.cristiano.etanolougasolina.model;
 
 
+import androidx.annotation.NonNull;
+
 public class Estado {
 
    private Long id;
@@ -38,5 +40,11 @@ public class Estado {
 
     public void setSigla(String sigla) {
         this.sigla = sigla;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.nome;
     }
 }

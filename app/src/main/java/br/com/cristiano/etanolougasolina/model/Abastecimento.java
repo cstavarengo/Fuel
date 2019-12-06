@@ -106,7 +106,7 @@ public class Abastecimento {
         }
 
         public Builder valor(float valor){
-            this.abastecimento.setLitros(valor);
+            this.abastecimento.setValor(valor);
             return this;
         }
 

@@ -8,18 +8,19 @@
         app:showAsAction="never">
 
             <menu>
+                <item android:id="@+id/menuItemAbastecimentoAct" android:title="Abastecimentos"/>
                 <item android:id="@+id/menuItemNovoAbastecimento"  android:title="Novo" />
                 <item android:id="@+id/menuItemAbastecimentoSobre" android:title="Sobre"/>
             </menu>
     </item>
 
     <item android:id="@+id/menuItemSom"
-        android:icon="@android:drawable/sym_call_outgoing"
+        android:icon="@drawable/ic_volume_up_black_24dp"
         android:title="Som"
         app:showAsAction="always"/>
 
     <item android:id="@+id/menuItemVibracao"
-        android:icon="@android:drawable/presence_video_away"
+        android:icon="@drawable/ic_vibration_black_24dp"
         android:title="Som"
         app:showAsAction="always"/>
 

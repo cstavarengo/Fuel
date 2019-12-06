@@ -1,5 +1,7 @@
 package br.com.cristiano.etanolougasolina.model;
 
+import androidx.annotation.NonNull;
+
 public class Cidade {
 
     private Long id;
@@ -37,5 +39,11 @@ public class Cidade {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.nome;
     }
 }

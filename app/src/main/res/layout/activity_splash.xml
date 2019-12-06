@@ -14,7 +14,7 @@
         android:layout_height="100dp"
         android:layout_weight="15"
         android:layout_gravity="center"
-        android:src="@drawable/posto" />
+        android:src="@drawable/ic_posto_laranja_foreground" />
 
 
     <TextView

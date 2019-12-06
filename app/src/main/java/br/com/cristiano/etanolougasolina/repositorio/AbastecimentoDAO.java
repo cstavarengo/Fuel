@@ -52,11 +52,11 @@ public class AbastecimentoDAO {
         List<Abastecimento> abastecimentos = new ArrayList<>();
 
         Cursor cursor = banco.query(BancoConstantes.TABLE_NAME, new String[]{BancoConstantes.COLUNA_ID,
-                                                                             BancoConstantes.COLUNA_COMBUSTIVEL,
-                                                                             BancoConstantes.COLUNA_DATA,
-                                                                             BancoConstantes.COLUNA_VALOR,
-                                                                             BancoConstantes.COLUNA_LITROS,
-                                                                             BancoConstantes.COLUNA_LOCAL}, null, null, null, null,   null);
+                BancoConstantes.COLUNA_COMBUSTIVEL,
+                BancoConstantes.COLUNA_DATA,
+                BancoConstantes.COLUNA_VALOR,
+                BancoConstantes.COLUNA_LITROS,
+                BancoConstantes.COLUNA_LOCAL}, null, null, null, null,   null);
 
         while (cursor.moveToNext()){
 
@@ -65,8 +65,8 @@ public class AbastecimentoDAO {
                     .combustivel(cursor.getString(cursor.getColumnIndex(BancoConstantes.COLUNA_COMBUSTIVEL)))
                     .data(cursor.getString(cursor.getColumnIndex(BancoConstantes.COLUNA_DATA)))
                     .litros(cursor.getFloat(cursor.getColumnIndex(BancoConstantes.COLUNA_LITROS)))
-                    .valor(cursor.getColumnIndex(BancoConstantes.COLUNA_VALOR))
-                    .local(cursor.getColumnName(cursor.getColumnIndex(BancoConstantes.COLUNA_LOCAL)))
+                    .valor(cursor.getFloat(cursor.getColumnIndex(BancoConstantes.COLUNA_VALOR)))
+                    .local(cursor.getString(cursor.getColumnIndex(BancoConstantes.COLUNA_LOCAL)))
                     .build();
 
             abastecimentos.add(abastecimento);
@@ -95,8 +95,8 @@ public class AbastecimentoDAO {
                     .combustivel(cursor.getString(cursor.getColumnIndex(BancoConstantes.COLUNA_COMBUSTIVEL)))
                     .data(cursor.getString(cursor.getColumnIndex(BancoConstantes.COLUNA_DATA)))
                     .litros(cursor.getFloat(cursor.getColumnIndex(BancoConstantes.COLUNA_LITROS)))
-                    .valor(cursor.getColumnIndex(BancoConstantes.COLUNA_VALOR))
-                    .local(cursor.getColumnName(cursor.getColumnIndex(BancoConstantes.COLUNA_LOCAL)))
+                    .valor(cursor.getFloat(cursor.getColumnIndex(BancoConstantes.COLUNA_VALOR)))
+                    .local(cursor.getString(cursor.getColumnIndex(BancoConstantes.COLUNA_LOCAL)))
                     .build();
         }
         return abastecimento;

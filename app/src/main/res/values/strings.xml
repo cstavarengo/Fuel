@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Etanol ou Gasolina</string>
+    <string name="instituicao">Instituto Federal de São Paulo - Câmpus Campinas</string>
+    <string name="ano">2019</string>
+    <string name="titulo">Projeto de Aplicação Mobile - Android</string>
+    <string name="nome">Cristiano Henrique Stavarengo</string>
+    <string name="ra">150013-9</string>
+    <string name="email">c.stavarengo@hotmail.com</string>
 </resources>
