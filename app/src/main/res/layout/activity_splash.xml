@@ -11,10 +11,18 @@
         android:id="@+id/imageView"
         android:layout_marginTop="60dp"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:layout_weight="15"
         android:layout_gravity="center"
         android:src="@drawable/ic_posto_laranja_foreground" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textColor="@color/colorAccent"
+        android:gravity="center"
+        android:text="Etanol ou Gasolina"/>
 
 
     <TextView

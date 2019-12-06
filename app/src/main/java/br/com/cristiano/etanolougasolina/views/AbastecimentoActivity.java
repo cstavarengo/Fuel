@@ -30,6 +30,7 @@ import br.com.cristiano.etanolougasolina.R;
 import br.com.cristiano.etanolougasolina.adapters.AbastecimentoAdapter;
 import br.com.cristiano.etanolougasolina.api.CidadesApi;
 import br.com.cristiano.etanolougasolina.api.EstadosApi;
+import br.com.cristiano.etanolougasolina.aux.Internet;
 import br.com.cristiano.etanolougasolina.constantes.ConstantesApp;
 import br.com.cristiano.etanolougasolina.controller.AbastecimentoController;
 import br.com.cristiano.etanolougasolina.interfaces.AdapterInterfaceOnClick;
@@ -133,8 +134,12 @@ public class AbastecimentoActivity extends AppCompatActivity {
     }
 
     private void abrirTelaNovoAbastecimento() {
-        alertDialog.show();
-        carregarEstados();
+        if(Internet.internetConectada(this)) {
+            alertDialog.show();
+            carregarEstados();
+        } else {
+            Toast.makeText(this, "Necessário conexão com a Internet!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void adicionarNovoAbastecimento() {
