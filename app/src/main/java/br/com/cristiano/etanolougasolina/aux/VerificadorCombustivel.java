@@ -13,7 +13,7 @@ public class VerificadorCombustivel implements VerificarCombustivel {
     }
 
     @Override
-    public Boolean ehGasolina(double gasolina, double etanol) {
+    public Boolean ehGasolina(Float gasolina, Float etanol) {
         return (etanol / gasolina) > TAXA;
     }
 }

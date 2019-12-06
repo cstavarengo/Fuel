@@ -3,18 +3,17 @@ package br.com.cristiano.etanolougasolina.views;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem som;
     private MenuItem vibracao;
 
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+
+    private Boolean autorizadoVibrar;
+    private Boolean autorizadoSoar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,28 +62,42 @@ public class MainActivity extends AppCompatActivity {
                 String resposta = "";
 
                 if(camposPreenchidos()){
-                    double gas = Double.valueOf(editTextGasolina.getText().toString());
-                    double et = Double.valueOf(editTextEtanol.getText().toString());
+                    String gas = String.valueOf(editTextGasolina.getText());
+                    String et = String.valueOf(editTextEtanol.getText());
                     VerificadorCombustivel verificadorCombustivel = new VerificadorCombustivel();
 
-                    if(verificadorCombustivel.ehGasolina(gas, et))
+                    if(verificadorCombustivel.ehGasolina(Float.valueOf(gas), Float.parseFloat(et)))
                         resposta = "Abasteça com Gasolina!";
                     else
                         resposta = "Abasteça com Etanol!";
 
-                    texToSpeech.toPronounce(resposta);
+                    if(autorizadoSoar)
+                        texToSpeech.toPronounce(resposta);
+
                     textViewResultado.setText(resposta);
+                    textViewResultado.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
 
                 } else{
                     resposta = "Preencha todos os campos!";
-                    texToSpeech.toPronounce(resposta);
+
+                    if(autorizadoSoar)
+                        texToSpeech.toPronounce(resposta);
+
                     textViewResultado.setText(resposta);
-                    Vibrar vibrar = new Vibrar(MainActivity.this);
-                    vibrar.vibrar(700);
+                    textViewResultado.setTextColor(getResources().getColor(R.color.colorAccent));
+
+                    if(autorizadoVibrar) {
+                        Vibrar vibrar = new Vibrar(MainActivity.this);
+                        vibrar.vibrar(700);
+                    }
                 }
             }
         });
+
+        pref = MainActivity.this.getSharedPreferences(ConstantesApp.PREFS, Context.MODE_PRIVATE);
+        editor = pref.edit();
     }
+
 
     @Override
     protected void onPause() {
@@ -96,8 +115,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
+
         som = menu.findItem(R.id.menuItemSom);
         vibracao = menu.findItem(R.id.menuItemVibracao);
+
+        configuracaoMenuItem();
 
         return true;
     }
@@ -112,13 +134,38 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("flag", true);
                 startActivity(intent);
                 break;
+
             case R.id.menuItemAbastecimentoAct:
                 intent = new Intent(this, AbastecimentoActivity.class);
                 startActivity(intent);
                 break;
+
             case R.id.menuItemAbastecimentoSobre:
                 exibirAlertaSobre();
                 break;
+
+            case R.id.menuItemSom:
+                if(autorizadoSoar){
+                    editor.putBoolean(ConstantesApp.AUDIO_STATE, false);
+                    editor.commit();
+                }else{
+                    editor.putBoolean(ConstantesApp.AUDIO_STATE, true);
+                    editor.commit();
+                }
+                configuracaoMenuItem();
+                break;
+
+            case R.id.menuItemVibracao:
+                if(autorizadoVibrar){
+                    editor.putBoolean(ConstantesApp.VIBRATION_STATE, false);
+                    editor.commit();
+                }else{
+                    editor.putBoolean(ConstantesApp.VIBRATION_STATE, true);
+                    editor.commit();
+                }
+                configuracaoMenuItem();
+                break;
+
         }
         return true;
     }
@@ -134,13 +181,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean camposPreenchidos() {
-        String valorG = editTextGasolina.getText().toString();
-        String valorA = editTextGasolina.getText().toString();
+        String valorG = String.valueOf(editTextGasolina.getText());
+        String valorA = String.valueOf(editTextEtanol.getText());
 
-        if(valorA.isEmpty() || valorG.isEmpty() || valorA == null || valorG == null)
+        if(valorA.isEmpty() || valorG.isEmpty())
             return false;
 
         return true;
     }
 
+    private void configuracaoMenuItem(){
+        autorizadoVibrar = pref.getBoolean(ConstantesApp.VIBRATION_STATE, false);
+        autorizadoSoar = pref.getBoolean(ConstantesApp.AUDIO_STATE, false);
+
+        if(!autorizadoVibrar)
+            vibracao.setIcon(getResources().getDrawable(R.drawable.ic_do_not_disturb_black_24dp));
+        else
+            vibracao.setIcon(getResources().getDrawable(R.drawable.ic_vibration_black_24dp));
+
+
+        if(!autorizadoSoar)
+            som.setIcon(getResources().getDrawable(R.drawable.ic_volume_off_black_24dp));
+        else
+            som.setIcon(getResources().getDrawable(R.drawable.ic_volume_up_black_24dp));
+    }
 }
