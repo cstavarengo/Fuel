@@ -34,6 +34,7 @@ import br.com.cristiano.etanolougasolina.aux.Internet;
 import br.com.cristiano.etanolougasolina.constantes.ConstantesApp;
 import br.com.cristiano.etanolougasolina.controller.AbastecimentoController;
 import br.com.cristiano.etanolougasolina.interfaces.AdapterInterfaceOnClick;
+import br.com.cristiano.etanolougasolina.interfaces.AdapterInterfaceOnLongClick;
 import br.com.cristiano.etanolougasolina.model.Abastecimento;
 import br.com.cristiano.etanolougasolina.model.Cidade;
 import br.com.cristiano.etanolougasolina.model.Estado;
@@ -50,6 +51,8 @@ public class AbastecimentoActivity extends AppCompatActivity {
 
     private EditText editTextLitros;
     private EditText editTextValor;
+    private EditText editTextAlterarLitros;
+    private EditText editTextAlterarValor;
 
     private RadioButton radioGas;
     private RadioButton radioEta;
@@ -66,8 +69,6 @@ public class AbastecimentoActivity extends AppCompatActivity {
     private AbastecimentoController abastecimentoController;
     private AbastecimentoAdapter abastecimentoAdapter;
     private List<Abastecimento> abastecimentos;
-
-    private CidadesApi cidadesApi;
 
     private ArrayAdapter<Estado> adapterEstado;
     private ArrayAdapter<Cidade> adapterCidade;
@@ -102,8 +103,14 @@ public class AbastecimentoActivity extends AppCompatActivity {
                 Toast.makeText(AbastecimentoActivity.this, "Position: " + position, Toast.LENGTH_SHORT).show();
             }
         });
-    }
 
+        abastecimentoAdapter.setAdapterInterfaceOnLongClick(new AdapterInterfaceOnLongClick() {
+            @Override
+            public void longClick(int position) {
+                Toast.makeText(AbastecimentoActivity.this, "Position: " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     protected void onStart() {
@@ -129,8 +136,23 @@ public class AbastecimentoActivity extends AppCompatActivity {
             case R.id.menuItemADD:
                 abrirTelaNovoAbastecimento();
                 break;
+            case android.R.id.home:
+                Log.d(TAG, "onBackPressed: ");
+                Intent internet = new Intent(this, MainActivity.class);
+                startActivity(internet);
+                finish();
+                break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d(TAG, "onBackPressed: ");
+        Intent internet = new Intent(this, MainActivity.class);
+        startActivity(internet);
+        finish();
     }
 
     private void abrirTelaNovoAbastecimento() {
@@ -174,6 +196,14 @@ public class AbastecimentoActivity extends AppCompatActivity {
     }
 
     private void configuracaoObjetos(){
+        configurarAlertNovoAbastecimennto();
+        configurarAlertAlteracaoAbastecimento();
+    }
+
+    private void configurarAlertAlteracaoAbastecimento() {
+    }
+
+    private void configurarAlertNovoAbastecimennto() {
         builder = new AlertDialog.Builder(this);
         builder.setView(layout_abastecimento).setCancelable(true);
         alertDialog = builder.create();

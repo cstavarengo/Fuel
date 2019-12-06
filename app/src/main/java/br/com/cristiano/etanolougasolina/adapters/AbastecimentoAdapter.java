@@ -38,6 +38,9 @@ public class AbastecimentoAdapter extends RecyclerView.Adapter <AbastecimentoAda
         this.adapterInterfaceOnClick = adapterInterfaceOnClick;
     }
 
+    public void setAdapterInterfaceOnLongClick(AdapterInterfaceOnLongClick adapterInterfaceOnLongClick) {
+        this.adapterInterfaceOnLongClick = adapterInterfaceOnLongClick;
+    }
 
     public List<Abastecimento> getAbastecimentos() {
         return abastecimentos;
